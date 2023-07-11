@@ -2,7 +2,7 @@
 
 Cummulative people counting Tensorflow Lite.
 
-![Cumulative counting example](doc/exemple.jpg)
+![Cumulative counting example](Doc/exemple.jpg)
 
 ## Installation
 1. Clone the repository 
@@ -64,7 +64,7 @@ By using these parameters, the Sort tracker is able to track objects detected ac
 
 You can already use [HRSR 602](https://www.amazon.com/-/es/MH-SR602-movimiento-Piroel%C3%A9ctrico-Infrarrojos-Interruptor/dp/B07Z45RMZV) to decrease energy consumption :
 
-![](doc/HRSR602.jpg)
+![](Doc/HRSR602.jpg)
 
 You can change the input GPIO by the following line :
  ```
