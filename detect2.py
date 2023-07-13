@@ -7,7 +7,10 @@ import cv2
 import os
 import time
 import numpy as np
+import struct
+import datetime
 from sort import *
+
 
 from pycoral.adapters.common import input_size
 from pycoral.adapters.detect import get_objects
@@ -17,6 +20,7 @@ from pycoral.utils.edgetpu import run_inference
 
 #PIN
 from periphery import GPIO
+from periphery import Serial
 
 
 def main():
@@ -44,6 +48,9 @@ def main():
     person_counter_leave = 0
     line1_x = 50  
     line2_x = 630
+    
+    #last send time
+    last_send_time = datetime.datetime.now()
 
 
     # Define the position and style of the FPS text
@@ -125,8 +132,20 @@ def main():
                 #fps = frame_count / elapsed_time           
             cv2.putText(cv2_im, f"FPS: {round(fps, 2)}", text_position, font, font_scale, font_color, font_thickness)
             cv2.imshow('frame', cv2_im)
-        
-            #Stop the detection
+            current_time = datetime.datetime.now()
+
+            #Send data by UART 2 times by day
+            if current_time.second == 15: #and #last_send_time.date() != current_time.data()
+                send_data(person_counter_enter)
+                send_data(person_counter_leave)
+                last_send_time = current_time
+
+            if current_time.second == 45: #and last_send_time.date() != current_time.date():
+                send_data(person_counter_enter)
+                send_data(person_counter_leave)
+                last_send_time = current_time
+
+                #Stop the detection
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             
@@ -138,6 +157,15 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
+def send_data(data):
+    # Convert int to bytes
+    bytes_data = struct.pack('i', data)
+
+    # Send data
+    uart1.write(bytes_data)
+
+    # Close the connection
+    uart1.close()
 
 def append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,line1_x,line2_x,entered_left_ids,exited_left_ids,height,width,person_counter_enter,entered_right_ids,exited_right_ids,person_counter_leave):
 
@@ -207,4 +235,5 @@ def append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,l
 if __name__ == '__main__':
     #Define motion sensor
     button = GPIO("/dev/gpiochip0", 13, "in")  # pin 36
+    uart1 = Serial("/dev/ttyS1", 9600)    # pins 29/31 (9600 baud)
     main()
