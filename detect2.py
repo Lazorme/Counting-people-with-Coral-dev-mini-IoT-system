@@ -20,7 +20,7 @@ from pycoral.utils.edgetpu import run_inference
 
 #PIN
 from periphery import GPIO
-from periphery import Serial
+import serial
 
 
 def main():
@@ -162,10 +162,10 @@ def send_data(data):
     bytes_data = struct.pack('i', data)
 
     # Send data
-    uart1.write(bytes_data)
+    port.write(bytes_data)
 
     # Close the connection
-    uart1.close()
+    port.close()
 
 def append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,line1_x,line2_x,entered_left_ids,exited_left_ids,height,width,person_counter_enter,entered_right_ids,exited_right_ids,person_counter_leave):
 
@@ -235,5 +235,6 @@ def append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,l
 if __name__ == '__main__':
     #Define motion sensor
     button = GPIO("/dev/gpiochip0", 13, "in")  # pin 36
-    uart1 = Serial("/dev/ttyS1", 9600)    # pins 29/31 (9600 baud)
+    port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
+
     main()
