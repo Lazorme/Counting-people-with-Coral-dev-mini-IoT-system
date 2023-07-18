@@ -1,83 +1,77 @@
-# Tensorflowlite to counting people with edge TPU (On coral dev)
+# Electric/Support 
+In this section, I will present the electrical schematics and provide support for assembling the final prototype. I will explain the different components that are being used.
 
-Cummulative people counting Tensorflow Lite.
+## Components choices
+1. **Consumption Report**
 
-![Cumulative counting example](Doc/exemple.jpg)
+    | Components      | Max curent      | Current mAh  
+    |---    |:-:    |:-:    |
+    | Coral dev mini   |   1.8A    |  1.3Ah     |    
+    | Charger |      0 |    0   |  
+    | Convertor|   ~0.1uA    |    ~0   |      
+    | Motion sensor HC-SR501/602|   65mA/20uA    |    65mAh/20uAh   | 
+    | Esp32|   250mA    |  33mAh     |   
+    |Total ||1398mAh
 
-## Installation
-1. Clone the repository 
-   ```git clone https://github.com/Lazorme/IAfinal.git```
+    For more detail check  [PNAlistofcomponents](PNAlistofcomponents.xlsx).
 
-2. [Get started with the coral dev board mini](https://coral.ai/docs/dev-board-mini/get-started/)
+2. **Lipo Rider Plus (Charger/Booster) ‐ 5V/2.4A USB Type C**
 
-3. Install dependencies
-   ```
-   cd IAfinal
-   pip3 install -r requirements.txt
-   ```
+    ![Lipo charger](Doc/Lipocharger.jpg "Lipo charger")
 
-# How to use ?
+    This charger can charge a battery with a maximum current of 2A, which is sufficient to charge the battery faster than its discharge rate (2A > 1.4A).
 
-To run cumulative counting with a Tensorflowlite person detection model use the [`detect2.py` script](detect2.py).
+    Output :
 
-## Arguments
-   ```
-    #You can change the name of the model here :
-    default_model = 'mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite' 
-    default_labels = 'coco_labels.txt'
+    -> 5V 2,4A with USB A perfect for powering up the Coral Dev Mini
 
-   --model -> 'model path' 
-                    default=os.path.join(default_model)
-   --labels -> 'label file path'
-                        default=os.path.join(default_labels)
-   --top_k' -> 'number of categories with highest score to display' type = int()
-                        default=10
-   --camera_idx -> 'Index of which video source to use'  type = int()
-                        default = 0
-   --threshold' -> ' classifier score threshold' type=float
-                        default=0.1
-   ```
-## Sort Tracker
+    -> 3.3V 250mA used to powerup the Esp32
 
-The tracking script name is ['sort.py' script](sort.py).
+    Input :
 
-Explanation of the different arguments :
- ```
-    #Create an instance :
-        mot_tracker=Sort()
+    Li-po 3.7V to plug the batterie
+    Input 5V 2A perfect for solar panel (/!\ If your are using 12V solar panel you need to decrease the voltage by using a covertor )
 
-    #Update the tracker :
-        trdata = mot_tracker.update(detections) #trdata content the tarcker's boundingbox
+    [Convertor LM2596](https://www.farnell.com/datasheets/3740626.pdf)
+---
+3. **Motion sensor HCSR-501/602**
 
-    #You can also create the tracker with different parameter :
-    mot_tracker = Sort(max_age,min_hits,iou_threshold) 
-   ```
-    max_age: This is the maximum number of frames that an object can be considered as still being tracked even if it's not detected in some frames. After this number of frames, the object will be considered as lost.
+    You have two choice first the [501](https://www.amazon.es/Ociodual-HCSR501-Movimiento-HC-SR501-Detector/dp/B071FBG4XW) you can adjust  delay and sensibylity of the sensor but work current is about 65mAh  which may be high for embedded systems.
 
-    min_hits: This is the minimum number of detections required for an object to be tracked. Before reaching this number, the object is considered as not being tracked.
+    Secondly you can use the [602](https://www.amazon.com/-/es/MH-SR602-movimiento-Piroel%C3%A9ctrico-Infrarrojos-Interruptor/dp/B07Z45RMZV) he is samller than the other , moreover he consum 20uA who is enought for embeded system but ! you can't adjust delay and sensybility. [The datasheets for both sensors provide more detailed information.](https://www.sinoning.com/hc-sr602-datasheet/) 
 
-    iou_threshold: This is the intersection over union (IoU) threshold used to evaluate if two detection regions overlap enough to be considered as matching.
+---
+4. **Solar Panel**
 
-By using these parameters, the Sort tracker is able to track objects detected across frames of a video using matching and prediction algorithms.
+    Specification of [solar pannel](https://www.amazon.es/dp/B076B3Z48G/ref=twister_B07V383T1X?_encoding=UTF8&psc=1) :
 
-## Motion sensor to reduce energy consumption
+        12V -> We need to decrease the voltage thank to a convertor.
+        2.83A -> short circuit current (Mot important detail when you choice solar pannel) we need to decrease the current with a resistor because the charge accept 2A input.
 
-You can already use [HRSR 602](https://www.amazon.com/-/es/MH-SR602-movimiento-Piroel%C3%A9ctrico-Infrarrojos-Interruptor/dp/B07Z45RMZV) to decrease energy consumption :
+ ---
+5. **Batterie**
 
-![](Doc/HRSR602.jpg)
+    Two importants things :
 
-You can change the input GPIO by the following line :
- ```
-        button = GPIO("/dev/gpiochip0", 13, "in")  # pin 36
-```
-Follow the recommandation on [coral.ai to connect pins](https://coral.ai/docs/dev-board-mini/gpio/)
+    First : Charge current can't exceed C/2 for exemple if you use a 1000mAh batterie, the charge current should be limited to 500mA.
 
-## Send data by Alhora
-SOON
+    Second : The battery's capacity should be chosen based on the desired operating time of the system. For example, if the system consumes 200mAh and a battery with a capacity of 1000mAh (C=1000mAh) is used, it can operate for approximately 5 hours (C/200).
+    [The provided battery is a 3.7V LiPo battery with a specific model and specifications.](https://www.amazon.es/Seamuing-recargable-protectora-revestimiento-aislamiento/dp/B0953L98RK/ref=asc_df_B0953L98RK/?tag=googshopes-21&linkCode=df0&hvadid=529719986347&hvpos=&hvnetw=g&hvrand=11114344516094827305&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1005424&hvtargid=pla-1364883397183&psc=1)
 
-License / Base on
-----------------------
-[Sort project](https://github.com/abewley/sort/tree/master)
+---
+
+6. **Shematic**
+
+    ![Lipo charger](Doc/PNAshematic.png "Lipo charger")
+
+## Support
+1. **Coral dev support for Esp32**
+![Lipo charger](Doc/Coralsupport.png "Lipo charger")
+
+2. **Pi zero support**
+![Lipo charger](Doc/Pizerosupport.png "Lipo charger")
+
+
 
 
 
