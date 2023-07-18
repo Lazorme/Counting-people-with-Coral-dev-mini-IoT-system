@@ -56,6 +56,7 @@ In this section, I will present the electrical schematics and provide support fo
     First : Charge current can't exceed C/2 for exemple if you use a 1000mAh batterie, the charge current should be limited to 500mA.
 
     Second : The battery's capacity should be chosen based on the desired operating time of the system. For example, if the system consumes 200mAh and a battery with a capacity of 1000mAh (C=1000mAh) is used, it can operate for approximately 5 hours (C/200).
+   
     [The provided battery is a 3.7V LiPo battery with a specific model and specifications.](https://www.amazon.es/Seamuing-recargable-protectora-revestimiento-aislamiento/dp/B0953L98RK/ref=asc_df_B0953L98RK/?tag=googshopes-21&linkCode=df0&hvadid=529719986347&hvpos=&hvnetw=g&hvrand=11114344516094827305&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1005424&hvtargid=pla-1364883397183&psc=1)
 
 ---
