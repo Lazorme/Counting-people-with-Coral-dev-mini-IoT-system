@@ -30,7 +30,7 @@ In this section, I will present the electrical schematics and provide support fo
     Input :
 
     Li-po 3.7V to plug the batterie
-    Input 5V 2A perfect for solar panel (/!\ If your are using 12V solar panel you need to decrease the voltage by using a covertor )
+    Input 5V 2A Ideal for solar panel usage. If you are using a 12V solar panel, you will need to decrease the voltage using a converter.
 
     [Convertor LM2596](https://www.farnell.com/datasheets/3740626.pdf)
 ---
