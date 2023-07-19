@@ -1,3 +1,6 @@
+#!/bin/bash
+#Install dependencies
+
 echo "Installing all libraries."
 echo
 
