@@ -9,11 +9,15 @@ Cummulative people counting Tensorflow Lite.
    ```git clone https://github.com/Lazorme/IAfinal.git```
 
 2. [Get started with the coral dev board mini](https://coral.ai/docs/dev-board-mini/get-started/)
+   
+   ! Before launch "sudo apt-get update" execute this line :
+   
+   ```sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B53DC80D13EDEF05```
 
 3. Install dependencies
    ```
    cd IAfinal
-   pip3 install -r requirements.txt
+   bash requirement.sh
    ```
 
 # How to use ?
@@ -73,7 +77,10 @@ You can change the input GPIO by the following line :
 Follow the recommandation on [coral.ai to connect pins](https://coral.ai/docs/dev-board-mini/gpio/)
 
 ## Send data by Alhora
-SOON
+You can change the input UART by the following line :
+ ```
+    port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
+```
 
 License / Base on
 ----------------------
