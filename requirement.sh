@@ -1,13 +1,13 @@
 #!/bin/bash
 # Install Tracker Dependencies
 echo
-echo "Installing tracker dependencies."
+echo "Installing dependencies."
 echo
 
-read -p "Install dependencies and openCV ? (GPLv3)? " -n 1 -r
+read -p "Install dependencies and openCV ? " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    sudo apt install python3-opencv
+    sudo apt-get install -y python3-pip python3-edgetpuvision
     sudo apt install python3-opencv
     sudo apt install python3-skimage
     sudo apt install python3-dev
