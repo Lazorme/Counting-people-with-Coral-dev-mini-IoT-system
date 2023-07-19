@@ -61,29 +61,39 @@ def main():
     font_thickness = 2  # Font thickness
 
     #Loading the model
-    print('Loading {} with {} labels the programme start ....'.format(args.model, args.labels))
+    print('Loading {} with {} labels , the programme start ....'.format(args.model, args.labels))
+    loading_animation()
     interpreter = make_interpreter(args.model)
     interpreter.allocate_tensors()
 
     #Loading labels
     print('Loading labels ...')
+    loading_animation()
     labels = read_label_file(args.labels)
     inference_size = input_size(interpreter)
-    cap = cv2.VideoCapture('Test.mp4')
+
+    #Loading camera
+    print('Open camera ...')
+    loading_animation()
+    cap = cv2.VideoCapture(1)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+    cap.set(cv2.CAP_PROP_FPS, 15)
+
 
     #Tracker instance
     mot_tracker = Sort(max_age=3,min_hits=4,iou_threshold=0.4) #create instance of the SORT tracker
 
     while cap.isOpened():
+
         if button.read()==1:
             ret, frame = cap.read()
             if not ret:
                 print('No data , please check the camera!')
                 break
+
             fps = cap.get(cv2.CAP_PROP_FPS)
             cv2_im = frame
-
-         
 
             #Display the people counter
             cv2.putText(cv2_im, f"Personnes enters: {person_counter_enter}", (10, 70), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
@@ -91,9 +101,9 @@ def main():
 
             #Resize corectly and run interference
             if cv2_im.shape[:2] != inference_size:
-                cv2_im_rgb = cv2.cvtColor(cv2_im, cv2.COLOR_BGR2RGB)
-                cv2_im_rgb = cv2.resize(cv2_im_rgb, inference_size)
-                run_inference(interpreter, cv2_im_rgb.tobytes())
+                cv2_im = cv2.cvtColor(cv2_im, cv2.COLOR_BGR2RGB)
+                cv2_im = cv2.resize(cv2_im, inference_size)
+                run_inference(interpreter, cv2_im.tobytes())
             else:
                 run_inference(interpreter, cv2_im.tobytes())
 
@@ -125,11 +135,7 @@ def main():
             if len(objs) != 0:
                 cv2_im,person_counter_enter,person_counter_leave = append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,line1_x,line2_x,entered_left_ids,exited_left_ids,height,width,person_counter_enter,entered_right_ids,exited_right_ids,person_counter_leave)
 
-            #Show FPS
-            #frame_count += 1
-            #if frame_count % fps_update_interval == 0:
-                #elapsed_time = time.time() - start_time
-                #fps = frame_count / elapsed_time           
+            #Show FPS       
             cv2.putText(cv2_im, f"FPS: {round(fps, 2)}", text_position, font, font_scale, font_color, font_thickness)
             cv2.imshow('frame', cv2_im)
             current_time = datetime.datetime.now()
@@ -145,7 +151,7 @@ def main():
                 send_data(person_counter_leave)
                 last_send_time = current_time
 
-                #Stop the detection
+            #Stop the detection
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             
@@ -156,17 +162,26 @@ def main():
     button.close()
     cap.release()
     cv2.destroyAllWindows()
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#Aniamtion ^^
+def loading_animation():
+    animation = "|/-\\"
+    for i in range(10):
+        time.sleep(0.1)  # Pause pour donner l'effet d'animation
+        print(f"\rLoading {animation[i % len(animation)]}", end="")
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#use to send data
 def send_data(data):
+
     # Convert int to bytes
     bytes_data = struct.pack('i', data)
 
     # Send data
     port.write(bytes_data)
 
-    # Close the connection
-    port.close()
-
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#Use to draw the bbox
 def append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,line1_x,line2_x,entered_left_ids,exited_left_ids,height,width,person_counter_enter,entered_right_ids,exited_right_ids,person_counter_leave):
 
     #Define scale between inference size and input size
@@ -230,11 +245,10 @@ def append_objs_to_img(cv2_im, inference_size, objs, labels,trdata,trackerFlag,l
             cv2_im = cv2.putText(cv2_im, label, (x, y+30),cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 0, 0), 2)
     return cv2_im,person_counter_enter,person_counter_leave
 
-   
-
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#Begining
 if __name__ == '__main__':
     #Define motion sensor
     button = GPIO("/dev/gpiochip0", 13, "in")  # pin 36
     port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
-
     main()
