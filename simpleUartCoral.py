@@ -1,3 +1,5 @@
+#Simple scripts to test UART connection
+
 import serial, struct
 import os, time
 
