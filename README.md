@@ -85,6 +85,7 @@ You can change the input UART by the following line :
  ```
     port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
 ```
+or you can test with [simpleUartCoral script](simpleUartCoral.py)
 
 License / Base on
 ----------------------
