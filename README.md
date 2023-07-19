@@ -8,7 +8,7 @@ Cummulative people counting Tensorflow Lite.
 1. Clone the repository 
    ```git clone https://github.com/Lazorme/IAfinal.git```
    
-   install [linux-image-4.19.125-mtk_4-2_arm64](linux-image-4.19.125-mtk_4-2_arm64.deb) with :
+   install [linux-image-4.19.125-mtk_4-2_arm64](linux-image-4.19.125-mtk_4-2_arm64.deb) (Compile kernel to use docker and USB Camera) with :
 
    ```dpkg -i linux-image-4.19.125-mtk_4-2_arm64.deb```
 
