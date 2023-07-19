@@ -7,14 +7,18 @@ Cummulative people counting Tensorflow Lite.
 ## Installation
 1. Clone the repository 
    ```git clone https://github.com/Lazorme/IAfinal.git```
+   
+   install [linux-image-4.19.125-mtk_4-2_arm64](linux-image-4.19.125-mtk_4-2_arm64.deb) with :
 
-2. [Get started with the coral dev board mini](https://coral.ai/docs/dev-board-mini/get-started/)
+   ```dpkg -i linux-image-4.19.125-mtk_4-2_arm64.deb```
+
+3. [Get started with the coral dev board mini](https://coral.ai/docs/dev-board-mini/get-started/)
    
    ! Before launch "sudo apt-get update" execute this line :
    
    ```sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B53DC80D13EDEF05```
 
-3. Install dependencies
+4. Install dependencies
    ```
    cd IAfinal
    bash requirement.sh
