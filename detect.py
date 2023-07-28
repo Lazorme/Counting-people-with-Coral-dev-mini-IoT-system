@@ -257,6 +257,6 @@ if __name__ == '__main__':
     subprocess.run(command, shell=True)
 
     #Define motion sensor
-    button = GPIO("/dev/gpiochip0", 13, "in")  # pin 36
+    button = GPIO("/dev/gpiochip0", 38, "in")  # pin 38
     port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
     main()
