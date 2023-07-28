@@ -46,6 +46,7 @@ def main():
     exited_right_ids = set()  # Identifiers of objects that crossed the second line
     person_counter_enter = 0
     person_counter_leave = 0
+    global person_inside 
     line1_x = 50  
     line2_x = 730
     
