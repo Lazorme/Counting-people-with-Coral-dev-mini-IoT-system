@@ -96,6 +96,7 @@ def main():
             cv2_im = frame
 
             #Display the people counter
+            person_inside = person_counter_enter-person_counter_leave
             cv2.putText(cv2_im, f"Personnes enters: {person_counter_enter}", (10, 80), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
             cv2.putText(cv2_im, f"Personnes inside: {person_inside}", (10, 70), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
             cv2.putText(cv2_im, f"Personnes leaves: {person_counter_leave}", (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 0), 2)
