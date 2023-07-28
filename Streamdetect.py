@@ -50,6 +50,7 @@ def main():
     global person_inside 
     line1_x = 50  
     line2_x = 730
+    go=1
     
     #last send time
     last_send_time = datetime.datetime.now()
@@ -87,7 +88,7 @@ def main():
 
     while cap.isOpened():
 
-        if button.read()==1 or button.read()==0:
+        if go==1:
             ret, frame = cap.read()
             if not ret:
                 print('No data , please check the camera!')
@@ -172,7 +173,7 @@ def main():
             print('waiting')
             time.sleep(1)
 
-    button.close()
+    #button.close()
     cap.release()
     cv2.destroyAllWindows()
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -272,6 +273,6 @@ if __name__ == '__main__':
     subprocess.run(command, shell=True)
 
     #Define motion sensor
-    button = GPIO("/dev/gpiochip0", 38, "in")  # pin 38
+    #button = GPIO("/dev/gpiochip0", 38, "in")  # pin 38
     port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
     app.run(host='0.0.0.0', port=5000, debug=True)
