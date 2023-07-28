@@ -274,4 +274,4 @@ if __name__ == '__main__':
     #Define motion sensor
     button = GPIO("/dev/gpiochip0", 13, "in")  # pin 36
     port = serial.Serial("/dev/ttyS1", baudrate=9600, timeout =1)
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
