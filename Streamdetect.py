@@ -78,16 +78,16 @@ def main():
     print('Open camera ...')
     loading_animation()
     cap = cv2.VideoCapture(1)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-    cap.set(cv2.CAP_PROP_FPS, 15)
+    #cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+    #cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+    #cap.set(cv2.CAP_PROP_FPS, 15)
 
     #Tracker instance
     mot_tracker = Sort(max_age=3,min_hits=4,iou_threshold=0.4) #create instance of the SORT tracker
 
     while cap.isOpened():
 
-        if button.read()==1:
+        if button.read()==1 or button.read()==0:
             ret, frame = cap.read()
             if not ret:
                 print('No data , please check the camera!')
