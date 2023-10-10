@@ -26,7 +26,9 @@ Cummulative people counting Tensorflow Lite.
 
 # How to use ?
 
-To run cumulative counting with a Tensorflowlite person detection model use the [`detect2.py` script](detect2.py).
+To run cumulative counting with a Tensorflowlite person detection model use the [`detect.py` script](detect.py).
+
+To run the program with the stream [`Streamdetect.py` script](Streamdetect.py).
 
 ## Arguments
    ```
